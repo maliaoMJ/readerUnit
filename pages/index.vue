@@ -1,13 +1,30 @@
 <template>
-  <div class="homePage">
-    homePage
+  <div class="homePage" id="read">
   </div>
 </template>
 
 <script>
+import Epub from 'epubjs'
 
+const bookUrl = '/book/4.epub'
 export default {
   components: {
+  },
+  methods: {
+    openBook() {
+      // 生成BOOK
+      this.book = new Epub(bookUrl)
+      console.log(this.book)
+      this.rendition = this.book.renderTo('read', {
+         width: window.innerWidth,
+         height: window.innerHeight
+      })
+      this.rendition.display()
+    }
+  },
+  mounted() {
+    console.log('open book')
+    this.openBook()
   }
 }
 
@@ -17,7 +34,7 @@ export default {
  .homePage{
    width:100%;
    height:100%;
-   background:red;
+   background:#fff;
  }
 </style>
 
