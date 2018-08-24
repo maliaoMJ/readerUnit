@@ -11,6 +11,9 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      {src: '/js/flexible.js', type: 'text/javascript', charset: 'utf-8' }
     ]
   },
   /*
@@ -24,6 +27,12 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
+   // 一次打包
+   vendor: ['axios'],
+   postcss: [
+    require('postcss-px2rem')({
+      remUnit: 75
+   })],
     extend (config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({

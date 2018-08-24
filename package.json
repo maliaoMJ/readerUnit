@@ -13,8 +13,10 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "node-sass": "^4.9.3",
     "nuxt": "^1.0.0",
+    "postcss-px2rem": "^0.3.0",
     "sass": "^1.13.0",
     "sass-loader": "^7.1.0"
   },
