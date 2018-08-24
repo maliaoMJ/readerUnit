@@ -1,12 +1,18 @@
 <template>
-  <div class="homePage" id="read">
+  <div class="homePage">
+    <div id="read"></div>
+    <div class="mask">
+      <div class="left" @click="prevPage"></div>
+      <div class="center"></div>
+      <div class="right" @click="nextPage"></div>
+    </div>
   </div>
 </template>
 
 <script>
 import Epub from 'epubjs'
 
-const bookUrl = '/book/4.epub'
+const bookUrl = '/book/1.epub'
 export default {
   components: {
   },
@@ -20,6 +26,16 @@ export default {
          height: window.innerHeight
       })
       this.rendition.display()
+    },
+    nextPage() {
+      if(this.rendition){
+        this.rendition.next()
+      }
+    },
+    prevPage() {
+       if(this.rendition){
+        this.rendition.prev()
+      }
     }
   },
   mounted() {
@@ -35,6 +51,38 @@ export default {
    width:100%;
    height:100%;
    background:#fff;
+   position: absolute;
+   top:0;
+   left:0;
+   bottom:0;
+   right:0;
+   #read{
+    width:100%;
+    height:100%;
+    background:#fff;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;;
+    z-index: 10;
+   }
+   .mask{
+      width:100%;
+      height:100%;
+      position: absolute;
+      top:0;
+      left:0;
+      bottom:0;
+      right:0;
+      z-index: 20;
+      background: rgba(0,0,0,0);
+      display: flex;
+      flex-direction: row;
+      .left,.right,.center{
+        flex:1;
+      }
+   }
  }
 </style>
 
