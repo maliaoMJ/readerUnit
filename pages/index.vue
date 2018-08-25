@@ -15,7 +15,7 @@
 import Epub from 'epubjs'
 import appHeader from '../components/views/Home/appHeader'
 import appFooter from '../components//views/Home/appFooter'
-const bookUrl = '/book/1.epub'
+const bookUrl = '/book/4.epub'
 export default {
   components: {
     appHeader,
