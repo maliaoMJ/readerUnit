@@ -5,8 +5,16 @@
       <div class="left" @click="prevPage"></div>
       <div class="center" @click="toggleMenu"></div>
       <div class="right" @click="nextPage"></div>
-       <transition name="slide-down"><app-header v-show="isShowMenu"></app-header></transition>
-      <transition name="slide-up"><app-footer v-show="isShowMenu"></app-footer></transition>
+       <transition name="slide-down">
+         <app-header v-show="isShowMenu"></app-header>
+       </transition>
+     <app-footer
+     :isShowMenu="isShowMenu"
+     :fontSizeList="fontSizeList"
+     :defaultSize="defaultSize"
+     @changeFontSize="changeFontSize"
+     ref="appfooter"
+     ></app-footer>
     </div>
   </div>
 </template>
@@ -24,6 +32,16 @@ export default {
   data() {
     return {
       isShowMenu: false,
+      fontSizeList: [
+        {size: 12},
+        {size: 14},
+        {size: 16},
+        {size: 18},
+        {size: 20},
+        {size: 22},
+        {size: 24}
+      ],
+      defaultSize: 16
     }
   },
   methods: {
@@ -36,6 +54,7 @@ export default {
          height: window.innerHeight
       })
       this.rendition.display()
+      this.themes = this.rendition.themes
     },
     nextPage() {
       if(this.rendition){
@@ -49,6 +68,18 @@ export default {
     },
     toggleMenu() {
       this.isShowMenu = !this.isShowMenu
+      if(!this.isShowMenu){
+        this.$nextTick(()=>{
+          this.$refs.appfooter.closeSettingFontsPanle()
+        })
+      }
+    },
+    changeFontSize(fontSize) {
+      this.defaultSize = fontSize
+      console.log(fontSize);
+      if(this.themes){
+        this.themes.fontSize(`${fontSize}px`)
+      }
     }
   },
   mounted() {
@@ -69,6 +100,7 @@ export default {
    left:0;
    bottom:0;
    right:0;
+   overflow: hidden;
    #read{
     width:100%;
     height:100%;
@@ -111,16 +143,6 @@ export default {
   transform: translateY(-1.3rem);
   opacity: 0;
 }
- .slide-up-enter-active {
-  transition: all .3s linear;
-}
-.slide-up-leave-active {
-  transition: all .3s linear;
-}
-.slide-up-enter, .slide-up-leave-to
-/* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateY(1.3rem);
-  opacity: 0;
-}
+
 </style>
 
