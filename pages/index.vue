@@ -5,16 +5,21 @@
       <div class="left" @click="prevPage"></div>
       <div class="center"></div>
       <div class="right" @click="nextPage"></div>
+      <app-header></app-header>
+      <app-footer></app-footer>
     </div>
   </div>
 </template>
 
 <script>
 import Epub from 'epubjs'
-
+import appHeader from '../components/views/Home/appHeader'
+import appFooter from '../components//views/Home/appFooter'
 const bookUrl = '/book/1.epub'
 export default {
   components: {
+    appHeader,
+    appFooter
   },
   methods: {
     openBook() {
@@ -79,8 +84,11 @@ export default {
       background: rgba(0,0,0,0);
       display: flex;
       flex-direction: row;
-      .left,.right,.center{
+      .left,.right{
         flex:1;
+      }
+      .center{
+        width:70%;
       }
    }
  }
