@@ -1,5 +1,6 @@
 <template>
    <div class="appFooter">
+     <!-- // 字体设置 -->
      <transition name="slide-panle">
       <div class="settingPanle" v-show="isShowMenu & isShowSettingFonts">
         <div class="preview" :style="{fontSize: `${fontSizeList[0].size}px`}">A</div>
@@ -17,11 +18,22 @@
         <div class="preview"  :style="{fontSize: `${fontSizeList[fontSizeList.length - 1].size}px`}">A</div>
       </div>
      </transition>
+     <!-- // 主题 -->
+     <transition name="slide-panle">
+      <div class="settingThemes" v-show="isShowMenu & isShowSettingThemes">
+       <div class="item" v-for="(item, index) in themesList" :key="item.name" :class="{active: defaultThemes === index}" @click="changeThemes(index)">
+         <div class="color">
+           <div class="colorblock" :style="{background: item.style.body.background}"></div>
+         </div>
+         <div class="text">{{item.title}}</div>
+       </div>
+      </div>
+     </transition>
      <transition name="slide-up">
-        <div class="settingsBar" v-show="isShowMenu" :class="{hideBoxShadow: isShowSettingFonts}">
+        <div class="settingsBar" v-show="isShowMenu" :class="{hideBoxShadow: isShowSettingFonts || isShowSettingThemes}">
           <i class="iconfont icon-studioslist"></i>
           <i class="iconfont icon-tiaojie"></i>
-          <i class="iconfont icon-sun"></i>
+          <i class="iconfont icon-sun"  @click="toggleSettingThemes"></i>
           <i class="iconfont icon-A" @click="toggleSettingFontsPanle"></i>
         </div>
      </transition>
@@ -41,26 +53,46 @@ export default {
       type: Array,
       default: ()=>({})
     },
+    themesList: {
+      type: Array,
+      default: ()=>({})
+    },
     defaultSize: {
       type: Number,
       default: 16
+    },
+    defaultThemes: {
+      type: Number,
+      default: 0
     }
 
   },
   data() {
     return {
-      isShowSettingFonts: false
+      isShowSettingFonts: false,
+      isShowSettingThemes: false
     }
   },
   methods: {
     toggleSettingFontsPanle() {
+      this.isShowSettingThemes = false
       this.isShowSettingFonts = !this.isShowSettingFonts
+    },
+    toggleSettingThemes() {
+      this.isShowSettingFonts = false
+      this.isShowSettingThemes = !this.isShowSettingThemes
+    },
+    closeSettingsThemes() {
+      this.isShowSettingThemes = false
     },
     closeSettingFontsPanle() {
       this.isShowSettingFonts = false
     },
     changeFontSize(fontSize) {
       this.$emit('changeFontSize', fontSize)
+    },
+    changeThemes(index) {
+      this.$emit('changeThemes', index)
     }
   }
 }
@@ -123,7 +155,44 @@ export default {
      }
    }
   }
-   .settingsBar {
+  .settingThemes{
+   position:absolute;
+   left:0;
+   bottom:1.29rem;
+   height:1.5rem;
+   width:100%;
+   background:#fff;
+   box-shadow: 0px -5px 0.4rem rgba(0, 0, 0, 0.5);
+   display: flex;
+   .item{
+     flex:1;
+     height: 100%;
+     display:flex;
+     flex-direction: column;
+     font-size:0.25rem;
+     &.active{
+       background:#eee;
+       color:red;
+     }
+     .color{
+       height:0.8rem;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       .colorblock{
+         width:80%;
+         height:80%;
+       }
+     }
+     .text{
+       flex:1;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+     }
+   }
+  }
+ .settingsBar {
   position: absolute;
   bottom:0;
   left:0;

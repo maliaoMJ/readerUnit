@@ -12,7 +12,10 @@
      :isShowMenu="isShowMenu"
      :fontSizeList="fontSizeList"
      :defaultSize="defaultSize"
+     :themesList="themesList"
+     :defaultThemes="defaultThemes"
      @changeFontSize="changeFontSize"
+     @changeThemes="changeThemes"
      ref="appfooter"
      ></app-footer>
     </div>
@@ -41,11 +44,54 @@ export default {
         {size: 22},
         {size: 24}
       ],
-      defaultSize: 16
+      defaultSize: 16,
+      defaultThemes: 0,
+      themesList: [
+        {
+          name: 'default',
+          title: '默认',
+          style: {
+            body: {
+              'background': '#fff',
+              'color': '#000'
+            }
+          }
+        },
+        {
+          name: 'eye',
+          title: '护眼',
+          style: {
+            body: {
+              'background': 'rgb(128, 215, 140)',
+              'color': '#000'
+            }
+          }
+        },
+        {
+          name: 'tradition',
+          title: '传统',
+          style: {
+            body: {
+              'background': '#fdab00',
+              'color': '#fff'
+            }
+          }
+        },
+        {
+          name: 'night',
+          title: '夜间',
+          style: {
+            body: {
+              'background': '#000',
+              'color': '#fff'
+            }
+          }
+        }
+      ]
     }
   },
   methods: {
-    openBook() {
+    async openBook() {
       // 生成BOOK
       this.book = new Epub(bookUrl)
       console.log(this.book)
@@ -55,15 +101,24 @@ export default {
       })
       this.rendition.display()
       this.themes = this.rendition.themes
+      await this.registerThemes()
+      this.themes.select(this.themesList[this.defaultThemes].name)
+    },
+    registerThemes() {
+      this.themesList.forEach(theme=>{
+        this.themes.register(theme.name,theme.style)
+      })
     },
     nextPage() {
       if(this.rendition){
         this.rendition.next()
+        this.toggleMenu()
       }
     },
     prevPage() {
        if(this.rendition){
         this.rendition.prev()
+        this.toggleMenu()
       }
     },
     toggleMenu() {
@@ -71,6 +126,7 @@ export default {
       if(!this.isShowMenu){
         this.$nextTick(()=>{
           this.$refs.appfooter.closeSettingFontsPanle()
+          this.$refs.appfooter.closeSettingsThemes()
         })
       }
     },
@@ -79,6 +135,12 @@ export default {
       console.log(fontSize);
       if(this.themes){
         this.themes.fontSize(`${fontSize}px`)
+      }
+    },
+    changeThemes(index) {
+      if(this.themes) {
+        this.defaultThemes = index
+        this.themes.select(this.themesList[this.defaultThemes].name)
       }
     }
   },
@@ -128,7 +190,7 @@ export default {
         flex:1;
       }
       .center{
-        width:70%;
+        width:60%;
       }
    }
  }
