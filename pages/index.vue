@@ -3,10 +3,10 @@
     <div id="read"></div>
     <div class="mask">
       <div class="left" @click="prevPage"></div>
-      <div class="center"></div>
+      <div class="center" @click="toggleMenu"></div>
       <div class="right" @click="nextPage"></div>
-      <app-header></app-header>
-      <app-footer></app-footer>
+       <transition name="slide-down"><app-header v-show="isShowMenu"></app-header></transition>
+      <transition name="slide-up"><app-footer v-show="isShowMenu"></app-footer></transition>
     </div>
   </div>
 </template>
@@ -20,6 +20,11 @@ export default {
   components: {
     appHeader,
     appFooter
+  },
+  data() {
+    return {
+      isShowMenu: false,
+    }
   },
   methods: {
     openBook() {
@@ -41,6 +46,9 @@ export default {
        if(this.rendition){
         this.rendition.prev()
       }
+    },
+    toggleMenu() {
+      this.isShowMenu = !this.isShowMenu
     }
   },
   mounted() {
@@ -92,5 +100,27 @@ export default {
       }
    }
  }
+ .slide-down-enter-active {
+  transition: all .3s linear;
+}
+.slide-down-leave-active {
+  transition: all .3s linear;
+}
+.slide-down-enter, .slide-down-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(-1.3rem);
+  opacity: 0;
+}
+ .slide-up-enter-active {
+  transition: all .3s linear;
+}
+.slide-up-leave-active {
+  transition: all .3s linear;
+}
+.slide-up-enter, .slide-up-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(1.3rem);
+  opacity: 0;
+}
 </style>
 
