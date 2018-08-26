@@ -47,9 +47,21 @@
         <div class="text" v-show="!bookAvailable">解析中</div>
       </div>
      </transition>
+     <!-- 目录 -->
+     <transition name="slide-left">
+      <div class="settingChapters" v-show="isShowMenu & isShowSettingChapters">
+       <div class="chaptersBox">
+         <div class="dir">基于Nuxt.js MIT协议</div>
+         <div class="noneText" v-if="!bookAvailable">加载中...</div>
+         <div class="item" v-else v-for="item in navigation.toc" :key="item.id" @click="jumpTo(item.href)">{{item.label}}</div>
+       </div>
+       
+       <div class="mosk" @click="toogleSettingChapters"></div>
+      </div>
+     </transition>
      <transition name="slide-up">
         <div class="settingsBar" v-show="isShowMenu" :class="{hideBoxShadow: isShowSettingFonts || isShowSettingThemes|| isShowSettingPrograss}">
-          <i class="iconfont icon-studioslist"></i>
+          <i class="iconfont icon-studioslist" @click="toogleSettingChapters"></i>
           <i class="iconfont icon-tiaojie" @click="toggleSettingPrograss"></i>
           <i class="iconfont icon-sun"  @click="toggleSettingThemes"></i>
           <i class="iconfont icon-A" @click="toggleSettingFontsPanle"></i>
@@ -75,6 +87,10 @@ export default {
       type: Array,
       default: ()=>({})
     },
+    navigation: {
+      type: Object,
+      default: ()=>({})
+    },
     themesList: {
       type: Array,
       default: ()=>({})
@@ -97,7 +113,8 @@ export default {
     return {
       isShowSettingFonts: false,
       isShowSettingThemes: false,
-      isShowSettingPrograss: true
+      isShowSettingPrograss: false,
+      isShowSettingChapters: false
     }
   },
   methods: {
@@ -117,6 +134,9 @@ export default {
       this.isShowSettingThemes = false
       this.isShowSettingPrograss = !this.isShowSettingPrograss
     },
+    toogleSettingChapters() {
+      this.isShowSettingChapters = !this.isShowSettingChapters
+    },
     closeSettingsThemes() {
       this.isShowSettingThemes = false
     },
@@ -125,6 +145,12 @@ export default {
     },
     closeSettingFontsPrograss() {
       this.isShowSettingPrograss = false
+    },
+    closeSettingChapters() {
+      this.isShowSettingChapters = false
+    },
+    jumpTo(href) {
+      this.$emit('jumpTo', href)
     },
     changeFontSize(fontSize) {
       this.$emit('changeFontSize', fontSize)
@@ -234,6 +260,60 @@ export default {
      }
    }
   }
+  .settingChapters{
+      position:fixed;
+      top:0;
+      left:0;
+      width: 100%;
+      height:100%;
+      z-index: 200;
+      // background:rgba(0,0,0,0.5);
+      display:flex;
+      .chaptersBox{
+        width:80%;
+        background:#fff;
+        height:100%;
+        overflow: auto;
+        box-shadow: 10px 0px 10px rgba(0,0,0,.15);
+        .item{
+          width:100%;
+          height:1rem;
+          font-size:0.4rem;
+          color:#222;
+          line-height: 1rem;
+          border-bottom:1px solid #ccc;
+          padding-left:20px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          box-sizing: border-box;
+        }
+        .noneText{
+          width:100%;
+          height:80%;
+          display:flex;
+          justify-content: center;
+          align-items: center;
+          font-size:0.5rem;
+          text-align: center;
+          color:#aaa;
+        }
+      }
+      .dir{
+       width:100%;
+       height:1.3rem;
+       border-bottom:1px solid #ccc;
+       font-size:0.7rem;
+       line-height: 1.3rem;
+       padding-left:0.75rem;
+     }
+     .noneText{
+
+     }
+      .mosk{
+        flex:1;
+      }
+  }
   .settingPrograss{
     position:absolute;
     left:0;
@@ -316,6 +396,17 @@ export default {
 .slide-panle-enter, .slide-panle-leave-to
 /* .slide-fade-leave-active for below version 2.1.8 */ {
   transform: translateY(2.78rem);
+  opacity: 0;
+}
+ .slide-left-enter-active {
+  transition: all .3s linear;
+}
+.slide-left-leave-active {
+  transition: all .3s linear;
+}
+.slide-left-enter, .slide-left-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translate3d(-100%, 0, 0);
   opacity: 0;
 }
 </style>

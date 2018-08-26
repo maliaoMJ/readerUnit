@@ -16,9 +16,11 @@
      :defaultThemes="defaultThemes"
      :defaultPercent="defaultPercent"
      :bookAvailable="bookAvailable"
+     :navigation="navigation"
      @changeFontSize="changeFontSize"
      @changeThemes="changeThemes"
      @changePrograss="changePrograss"
+     @jumpTo="jumpTo"
      ref="appfooter"
      ></app-footer>
     </div>
@@ -37,7 +39,7 @@ export default {
   },
   data() {
     return {
-      isShowMenu: true,
+      isShowMenu: false,
       fontSizeList: [
         {size: 12},
         {size: 14},
@@ -92,7 +94,8 @@ export default {
         }
       ],
       defaultPercent: 0,
-      bookAvailable:false
+      bookAvailable:false,
+      navigation: {}
     }
   },
   methods: {
@@ -110,11 +113,18 @@ export default {
       this.themes.select(this.themesList[this.defaultThemes].name)
       // 获取location
       this.book.ready.then(() => {
+        this.navigation = this.book.navigation
+        console.log(this.navigation)
         return this.book.locations.generate()
       }).then(result => {
         this.locations = this.book.locations
         this.bookAvailable = true
       })
+    },
+    jumpTo(href) {
+      this.rendition.display(href);
+      this.toggleMenu()
+
     },
     registerThemes() {
       this.themesList.forEach(theme=>{
@@ -140,6 +150,7 @@ export default {
           this.$refs.appfooter.closeSettingFontsPanle()
           this.$refs.appfooter.closeSettingsThemes()
           this.$refs.appfooter.closeSettingFontsPrograss()
+          this.$refs.appfooter.closeSettingChapters()
         })
       }
     },
