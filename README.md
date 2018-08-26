@@ -13,7 +13,7 @@
 
 4. 通过目录跳转章节
 
-5. px2rem,flexiable.js postcss 等PC,移动端适配
+5. 利用px2rem,flexiable.js postcss 等技术做PC,移动端适配
 
 6.具体查看实例(资金暂无,剧本未定！自己可以拉下代码在本地构建查看效果)
 > 
