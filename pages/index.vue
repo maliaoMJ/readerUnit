@@ -112,13 +112,13 @@ export default {
     nextPage() {
       if(this.rendition){
         this.rendition.next()
-        this.toggleMenu()
+        this.isShowMenu = false
       }
     },
     prevPage() {
        if(this.rendition){
         this.rendition.prev()
-        this.toggleMenu()
+        this.isShowMenu = false
       }
     },
     toggleMenu() {
