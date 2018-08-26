@@ -29,10 +29,28 @@
        </div>
       </div>
      </transition>
+     <!-- 进度 -->
+     <transition name="slide-panle">
+      <div class="settingPrograss" v-show="isShowMenu & isShowSettingPrograss">
+       <input
+         type="range"
+         :disabled="!bookAvailable"
+         min=0
+         max=100
+         step=1
+         defaultValue="0"
+         :value="defaultPercent"
+         @change="changePrograss"
+         :style="{backgroundSize: `${defaultPercent}% 100%`}"
+        />
+        <div class="text" v-show="bookAvailable">{{defaultPercent}} %</div>
+        <div class="text" v-show="!bookAvailable">解析中</div>
+      </div>
+     </transition>
      <transition name="slide-up">
-        <div class="settingsBar" v-show="isShowMenu" :class="{hideBoxShadow: isShowSettingFonts || isShowSettingThemes}">
+        <div class="settingsBar" v-show="isShowMenu" :class="{hideBoxShadow: isShowSettingFonts || isShowSettingThemes|| isShowSettingPrograss}">
           <i class="iconfont icon-studioslist"></i>
-          <i class="iconfont icon-tiaojie"></i>
+          <i class="iconfont icon-tiaojie" @click="toggleSettingPrograss"></i>
           <i class="iconfont icon-sun"  @click="toggleSettingThemes"></i>
           <i class="iconfont icon-A" @click="toggleSettingFontsPanle"></i>
         </div>
@@ -49,6 +67,10 @@ export default {
       type: Boolean,
       default: false
     },
+    bookAvailable: {
+      type: Boolean,
+      default: false
+    },
     fontSizeList: {
       type: Array,
       default: ()=>({})
@@ -61,6 +83,10 @@ export default {
       type: Number,
       default: 16
     },
+    defaultPercent: {
+      type: Number,
+      default: 0
+    },
     defaultThemes: {
       type: Number,
       default: 0
@@ -70,17 +96,26 @@ export default {
   data() {
     return {
       isShowSettingFonts: false,
-      isShowSettingThemes: false
+      isShowSettingThemes: false,
+      isShowSettingPrograss: true
     }
   },
   methods: {
     toggleSettingFontsPanle() {
       this.isShowSettingThemes = false
+      this.isShowSettingPrograss = false
       this.isShowSettingFonts = !this.isShowSettingFonts
     },
     toggleSettingThemes() {
       this.isShowSettingFonts = false
+      this.isShowSettingPrograss = false
       this.isShowSettingThemes = !this.isShowSettingThemes
+    
+    },
+    toggleSettingPrograss() {
+      this.isShowSettingFonts = false
+      this.isShowSettingThemes = false
+      this.isShowSettingPrograss = !this.isShowSettingPrograss
     },
     closeSettingsThemes() {
       this.isShowSettingThemes = false
@@ -88,8 +123,15 @@ export default {
     closeSettingFontsPanle() {
       this.isShowSettingFonts = false
     },
+    closeSettingFontsPrograss() {
+      this.isShowSettingPrograss = false
+    },
     changeFontSize(fontSize) {
       this.$emit('changeFontSize', fontSize)
+    },
+    changePrograss(e) {
+      const percent = e.target.value
+      this.$emit('changePrograss', percent)
     },
     changeThemes(index) {
       this.$emit('changeThemes', index)
@@ -102,7 +144,7 @@ export default {
   .settingPanle{
    position:absolute;
    left:0;
-   bottom:1.29rem;
+   bottom:1.28rem;
    height:1.5rem;
    width:100%;
    background:#fff;
@@ -158,7 +200,7 @@ export default {
   .settingThemes{
    position:absolute;
    left:0;
-   bottom:1.29rem;
+   bottom:1.28rem;
    height:1.5rem;
    width:100%;
    background:#fff;
@@ -191,6 +233,46 @@ export default {
        justify-content: center;
      }
    }
+  }
+  .settingPrograss{
+    position:absolute;
+    left:0;
+    bottom:1.28rem;
+    height:1.5rem;
+    width:100%;
+    background:#fff;
+    box-shadow: 0px -5px 0.4rem rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*横条样式*/
+    input[type=range] {
+      -webkit-appearance: none;/*清除系统默认样式*/
+      flex:1;
+      margin-left:5%;
+      background: -webkit-linear-gradient(#fd8a2c, #fd8a2c) no-repeat, #ddd;/*设置左边颜色为#61bd12，右边颜色为#ddd*/
+      background-size: 75% 100%;/*设置左右宽度比例*/
+      height: 3px;/*横条的高度*/
+    }
+    /*拖动块的样式*/
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;/*清除系统默认样式*/
+      height: 26px;/*拖动块高度*/
+      width: 26px;/*拖动块宽度*/
+      background: #fff;/*拖动块背景*/
+      border-radius: 50%; /*外观设置为圆形*/
+      border: solid 1px #ddd; /*设置边框*/
+
+}
+.text{
+  width:1.28rem;
+  height:100%;
+  font-size:0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color:#aaa;
+}
   }
  .settingsBar {
   position: absolute;
@@ -233,7 +315,7 @@ export default {
 }
 .slide-panle-enter, .slide-panle-leave-to
 /* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateY(2.8rem);
+  transform: translateY(2.78rem);
   opacity: 0;
 }
 </style>

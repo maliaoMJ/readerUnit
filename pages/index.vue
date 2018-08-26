@@ -14,8 +14,11 @@
      :defaultSize="defaultSize"
      :themesList="themesList"
      :defaultThemes="defaultThemes"
+     :defaultPercent="defaultPercent"
+     :bookAvailable="bookAvailable"
      @changeFontSize="changeFontSize"
      @changeThemes="changeThemes"
+     @changePrograss="changePrograss"
      ref="appfooter"
      ></app-footer>
     </div>
@@ -34,7 +37,7 @@ export default {
   },
   data() {
     return {
-      isShowMenu: false,
+      isShowMenu: true,
       fontSizeList: [
         {size: 12},
         {size: 14},
@@ -87,7 +90,9 @@ export default {
             }
           }
         }
-      ]
+      ],
+      defaultPercent: 0,
+      bookAvailable:false
     }
   },
   methods: {
@@ -103,6 +108,13 @@ export default {
       this.themes = this.rendition.themes
       await this.registerThemes()
       this.themes.select(this.themesList[this.defaultThemes].name)
+      // 获取location
+      this.book.ready.then(() => {
+        return this.book.locations.generate()
+      }).then(result => {
+        this.locations = this.book.locations
+        this.bookAvailable = true
+      })
     },
     registerThemes() {
       this.themesList.forEach(theme=>{
@@ -127,6 +139,7 @@ export default {
         this.$nextTick(()=>{
           this.$refs.appfooter.closeSettingFontsPanle()
           this.$refs.appfooter.closeSettingsThemes()
+          this.$refs.appfooter.closeSettingFontsPrograss()
         })
       }
     },
@@ -136,6 +149,11 @@ export default {
       if(this.themes){
         this.themes.fontSize(`${fontSize}px`)
       }
+    },
+    changePrograss(percent) {
+      this.defaultPercent = Number.parseInt(percent)
+      const locations = this.defaultPercent > 0 ? this.locations.cfiFromPercentage((this.defaultPercent / 100)) : 0
+      this.rendition.display(locations)
     },
     changeThemes(index) {
       if(this.themes) {
