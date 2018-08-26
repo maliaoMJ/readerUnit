@@ -1,14 +1,30 @@
-# readerunit
+# readerunit 阅读工具 基于Nuxt.js 和 EpubJS 
+> 
+ ## 技术栈
+ Vue全家桶语法 + Nuxt.js SSR渲染框架 电子书解析JS Epub.js (只用了两天写的，界面自己设计的，不好看，后续有时间全部重构)
 
+>
+## 实现功能
+1.改变字体大小 
+
+2. 切换颜色主题 
+
+3.通过进度条调整阅读进度 
+
+4. 通过目录跳转章节
+
+5. px2rem,flexiable.js postcss 等PC,移动端适配
+
+6.具体查看实例(资金暂无,剧本未定！自己可以拉下代码在本地构建查看效果)
 > 
 
-## Build Setup
+## 构建步骤
 
 ``` bash
 # install dependencies
 $ npm install # Or yarn install
 
-# serve with hot reload at localhost:3000
+# serve with hot reload at localhost:3333
 $ npm run dev
 
 # build for production and launch server
@@ -18,6 +34,5 @@ $ npm start
 # generate static project
 $ npm run generate
 ```
-
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+从你的全世界路过。。。。
 
