@@ -17,8 +17,17 @@
 
 6.具体查看实例(资金暂无,剧本未定！自己可以拉下代码在本地构建查看效果)
 
+## 效果图
+![avatar](https://github.com/maliaoMJ/readerUnit/blob/master/demo/1.png)
 
-[PC端直接 查看在线DEMO](http://106.12.85.183/)[服务器已过期] 不要在微信中打开，因为被format 了 ，请在游览器中输入： http://106.12.85.183/[服务器已经过期]
+![avatar](https://github.com/maliaoMJ/readerUnit/blob/master/demo/2.png)
+
+![avatar](https://github.com/maliaoMJ/readerUnit/blob/master/demo/3.png)
+
+![avatar](https://github.com/maliaoMJ/readerUnit/blob/master/demo/4.png)
+
+![avatar](https://github.com/maliaoMJ/readerUnit/blob/master/demo/5.png)
+
 
 ## 构建步骤
 
